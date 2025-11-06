@@ -14,7 +14,7 @@ import com.hoianweb.controller.JsonUtil;
 // Import DAO THẬT
 import com.hoianweb.model.dao.CategoryDAO;
 
-@WebServlet("/api/category")
+@WebServlet("/api/theloai")
 public class CategoryAPIServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	private CategoryDAO categoryDAO;
