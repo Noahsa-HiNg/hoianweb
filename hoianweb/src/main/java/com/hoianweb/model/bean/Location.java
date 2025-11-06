@@ -1,5 +1,5 @@
 package com.hoianweb.model.bean;
-
+import java.util.List;
 import java.io.Serializable;
 
 public class Location implements Serializable {
@@ -11,7 +11,8 @@ public class Location implements Serializable {
     private double latitude;    // (was viDo)
     private String description; // (was moTa)
     private int categoryId;  // (was idTheLoai)
-
+    private String categoryName;
+    private List<Image> gallery;
     public Location() {
     }
 
@@ -40,4 +41,19 @@ public class Location implements Serializable {
     public void setDescription(String description) { this.description = description; }
     public int getCategoryId() { return categoryId; }
     public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public List<Image> getGallery() {
+        return gallery;
+    }
+
+    public void setGallery(List<Image> gallery) {
+        this.gallery = gallery;
+    }
 }
