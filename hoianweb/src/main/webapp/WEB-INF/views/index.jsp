@@ -35,7 +35,7 @@
 
 						  <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarSupportedContent">
 						    <ul class="navbar-nav">
-								<li><a href="menu">Menu</a></li>
+								<li><a href="index">Home</a></li> 
 								<li><a href="map">Map</a></li>
 								<li><a href="login">Login</a></li>
 						    </ul>
@@ -142,51 +142,34 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			<script src="${pageContext.request.contextPath}/js/main.js"></script>	
 
 			<script>
-				// Chờ cho toàn bộ nội dung trang tải xong
 				document.addEventListener("DOMContentLoaded", function() {
-					
 					const contextPath = "${pageContext.request.contextPath}";
 					const portfolioGrid = document.getElementById('portfolio-grid');
 					const categoryFilters = document.getElementById('category-filters');
 					let isotope;
 
-					// Gọi cả 2 API cùng lúc
 					Promise.all([
 						fetch(`${contextPath}/api/theloai`),
 						fetch(`${contextPath}/api/diadiem`)
 					])
 					.then(responses => Promise.all(responses.map(res => res.json())))
 					.then(([categories, locations]) => {
-						
-						// 1. Render các nút lọc (Thể loại)
 						renderCategories(categories);
-						
-						// 2. Render các địa điểm (Portfolio)
 						renderLocations(locations);
-						
-						// 3. Khởi tạo Isotope (thư viện lọc)
-						// Dùng $() vì trang của bạn đã có jQuery
 						isotope = $(portfolioGrid).isotope({
 							itemSelector: '.single-portfolio',
 							layoutMode: 'fitRows'
 						});
-
-						// 4. Gán sự kiện click cho các nút lọc
 						bindFilterClicks();
-
 					})
 					.catch(error => {
 						console.error("Lỗi khi tải dữ liệu:", error);
 						portfolioGrid.innerHTML = "<p class='text-center'>Không thể tải dữ liệu địa điểm.</p>";
 					});
 
-					// --- HÀM HỖ TRỢ ---
-
 					function renderCategories(categories) {
 						let filterHtml = '<li class="active" data-filter="*">All</li>';
-						// Giả định API /theloai trả về: [ { id, ten }, ... ]
 						categories.forEach(cat => {
-							// Tạo class filter, ví dụ: .category-1, .category-2
 							const filterClass = `category-${cat.id}`;
 							filterHtml += `<li data-filter=".${filterClass}">${cat.ten}</li>`;
 						});
@@ -195,7 +178,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 					function renderLocations(locations) {
 						let locationsHtml = '';
-						// Giả định API /diadiem trả về: [ { slug, ten, anhDaiDien, theLoai: { id, ten } }, ... ]
 						locations.forEach(loc => {
 							const filterClass = `category-${loc.theLoai.id}`;
 							const imageUrl = loc.anhDaiDien.startsWith('http') ? loc.anhDaiDien : `${contextPath}/${loc.anhDaiDien}`;
@@ -217,18 +199,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 					}
 
 					function bindFilterClicks() {
-						// Dùng jQuery vì trang của bạn có sẵn
 						$(categoryFilters).on('click', 'li', function() {
 							const filterValue = $(this).attr('data-filter');
-							
 							isotope.isotope({ filter: filterValue });
-
 							$(categoryFilters).find('.active').removeClass('active');
 							$(this).addClass('active');
 						});
 					}
-
 				});
 			</script>
-			</body>
+		</body>
 	</html>
