@@ -13,26 +13,38 @@ public class ImageDAO {
 
     public List<Image> getByLocationId(int locationId) {
         List<Image> imageList = new ArrayList<>();
-        // Cập nhật tên bảng và cột
         String sql = "SELECT * FROM image WHERE location_id = ?"; 
-
         try (Connection conn = DBContext.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
             pstmt.setInt(1, locationId);
-
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String url = rs.getString("image_url"); // Cập nhật tên cột
-                    
-                    Image img = new Image(id, url, locationId);
-                    imageList.add(img);
+                    imageList.add(new Image(rs.getInt("id"), rs.getString("image_url"), locationId));
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { e.printStackTrace(); }
         return imageList;
+    }
+
+    // BỔ SUNG HÀM NÀY ĐỂ HOÀN THIỆN CHỨC NĂNG UP ẢNH
+    public boolean create(Image image) {
+        String sql = "INSERT INTO image (image_url, location_id) VALUES (?, ?)";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, image.getImageUrl());
+            pstmt.setInt(2, image.getLocationId());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return false;
+    }
+    
+     public boolean delete(int id) {
+        String sql = "DELETE FROM image WHERE id = ?";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return false;
     }
 }

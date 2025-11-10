@@ -1,19 +1,23 @@
 package com.hoianweb.model.bean;
-import java.util.List;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Location implements Serializable {
 
     private int id;
-    private String name;        // (was tenDiaDiem)
+    private String name;
     private String slug;
-    private double longitude;   // (was kinhDo)
-    private double latitude;    // (was viDo)
-    private String description; // (was moTa)
-    private int categoryId;  // (was idTheLoai)
+    private double longitude;
+    private double latitude;
+    private String description;
+    private int categoryId;
     private String categoryName;
-    private List<Image> gallery;
+    private List<Image> gallery; 
+
     public Location() {
+        this.gallery = new ArrayList<>();
     }
 
     public Location(int id, String name, String slug, double longitude, double latitude, String description, int categoryId) {
@@ -24,9 +28,9 @@ public class Location implements Serializable {
         this.latitude = latitude;
         this.description = description;
         this.categoryId = categoryId;
+        this.gallery = new ArrayList<>();
     }
 
-    // Getters and Setters (cho tất cả các biến)
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getName() { return name; }
@@ -41,6 +45,7 @@ public class Location implements Serializable {
     public void setDescription(String description) { this.description = description; }
     public int getCategoryId() { return categoryId; }
     public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
+
     public String getCategoryName() {
         return categoryName;
     }

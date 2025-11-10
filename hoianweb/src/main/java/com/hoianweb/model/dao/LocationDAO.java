@@ -4,152 +4,121 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hoianweb.model.bean.Location; // Import Bean Location (tiếng Anh)
-import com.hoianweb.util.DBContext;       // Import DBContext
+import com.hoianweb.model.bean.Image;
+import com.hoianweb.model.bean.Location;
+import com.hoianweb.util.DBContext;
 
-/**
- * Lớp DAO (Data Access Object) cho bảng 'location'.
- * Đây là Task 11.
- */
 public class LocationDAO {
 
-    /**
-     * Hàm 1: Lấy tất cả các địa điểm.
-     * @return Một List các đối tượng Location.
-     */
-    public List<Location> getAll() {
-        List<Location> locationList = new ArrayList<>();
-        String sql = "SELECT * FROM location ORDER BY name";
+    private ImageDAO imageDAO = new ImageDAO();
 
+    // SQL chuẩn để lấy cả tên thể loại
+    private static final String SELECT_BASE = 
+        "SELECT l.*, c.name AS category_name " +
+        "FROM location l " +
+        "LEFT JOIN category c ON l.category_id = c.id ";
+
+    public List<Location> getAll() {
+        List<Location> list = new ArrayList<>();
+        String sql = SELECT_BASE + "ORDER BY l.name";
         try (Connection conn = DBContext.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
-
             while (rs.next()) {
-                // Tạo đối tượng Location từ dữ liệu CSDL
-                Location location = mapResultSetToLocation(rs);
-                locationList.add(location);
+                list.add(mapResultSetToLocation(rs));
             }
-        } catch (SQLException e) {
-            System.err.println("Lỗi LocationDAO - hàm getAll(): " + e.getMessage());
-            e.printStackTrace();
-        }
-        return locationList;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return list;
     }
 
-    /**
-     * Hàm 2: Lấy một địa điểm cụ thể bằng 'slug'.
-     * 'slug' là duy nhất (unique) nên hàm này chỉ trả về 1 đối tượng.
-     * @param slug Chuỗi slug (ví dụ: "chua-cau")
-     * @return Một đối tượng Location hoặc null nếu không tìm thấy.
-     */
     public Location getBySlug(String slug) {
-        String sql = "SELECT * FROM location WHERE slug = ?";
-        Location location = null;
-
+        String sql = SELECT_BASE + "WHERE l.slug = ?";
         try (Connection conn = DBContext.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setString(1, slug); // Gán tham số slug vào câu lệnh SQL
-
+            pstmt.setString(1, slug);
             try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) { // Nếu tìm thấy
-                    location = mapResultSetToLocation(rs);
-                }
+                if (rs.next()) return mapResultSetToLocation(rs);
             }
-        } catch (SQLException e) {
-            System.err.println("Lỗi LocationDAO - hàm getBySlug(): " + e.getMessage());
-            e.printStackTrace();
-        }
-        return location;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
     }
 
-    /**
-     * Hàm 3: Lấy tất cả địa điểm thuộc về một thể loại.
-     * @param categoryId ID của thể loại (ví dụ: 1 cho 'Historical Site')
-     * @return Một List các đối tượng Location.
-     */
     public List<Location> getByCategoryId(int categoryId) {
-        List<Location> locationList = new ArrayList<>();
-        String sql = "SELECT * FROM location WHERE category_id = ?";
-
+        List<Location> list = new ArrayList<>();
+        String sql = SELECT_BASE + "WHERE l.category_id = ? ORDER BY l.name";
         try (Connection conn = DBContext.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setInt(1, categoryId); // Gán tham số category_id
-
+            pstmt.setInt(1, categoryId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    Location location = mapResultSetToLocation(rs);
-                    locationList.add(location);
+                    list.add(mapResultSetToLocation(rs));
                 }
             }
-        } catch (SQLException e) {
-            System.err.println("Lỗi LocationDAO - hàm getByCategoryId(): " + e.getMessage());
-            e.printStackTrace();
-        }
-        return locationList;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return list;
     }
 
-    /**
-     * (Hàm tiện ích private)
-     * Chuyển đổi dữ liệu từ ResultSet sang đối tượng Location.
-     * Dùng để tránh lặp lại code ở cả 3 hàm trên.
-     */
+    public int create(Location loc) {
+        String sql = "INSERT INTO location (name, slug, longitude, latitude, description, category_id) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, loc.getName());
+            pstmt.setString(2, loc.getSlug());
+            pstmt.setDouble(3, loc.getLongitude());
+            pstmt.setDouble(4, loc.getLatitude());
+            pstmt.setString(5, loc.getDescription());
+            pstmt.setInt(6, loc.getCategoryId());
+            if (pstmt.executeUpdate() > 0) {
+                try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                    if (rs.next()) return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return -1;
+    }
+    
+    public boolean update(Location loc) {
+        String sql = "UPDATE location SET name=?, slug=?, longitude=?, latitude=?, description=?, category_id=? WHERE id=?";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, loc.getName());
+            pstmt.setString(2, loc.getSlug());
+            pstmt.setDouble(3, loc.getLongitude());
+            pstmt.setDouble(4, loc.getLatitude());
+            pstmt.setString(5, loc.getDescription());
+            pstmt.setInt(6, loc.getCategoryId());
+            pstmt.setInt(7, loc.getId());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return false;
+    }
+
+    public boolean delete(int id) {
+        String sql = "DELETE FROM location WHERE id = ?";
+        try (Connection conn = DBContext.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return false;
+    }
+
+    // MAPPER: Đã cập nhật để lấy gallery là List<Image>
     private Location mapResultSetToLocation(ResultSet rs) throws SQLException {
-        int id = rs.getInt("id");
-        String name = rs.getString("name");
-        String slug = rs.getString("slug");
-        double longitude = rs.getDouble("longitude");
-        double latitude = rs.getDouble("latitude");
-        String description = rs.getString("description");
-        int categoryId = rs.getInt("category_id");
-
-        return new Location(id, name, slug, longitude, latitude, description, categoryId);
-    }
-    /*
-    // Dán đoạn code này vào cuối file LocationDAO.java (trước dấu } cuối)
-    // Sau khi test xong có thể xóa đi
-    */
-    public static void main(String[] args) {
-        LocationDAO dao = new LocationDAO();
-
-        System.out.println("--- 1. Đang test hàm getAll() ---");
-        List<Location> allLocations = dao.getAll();
-        if (allLocations.isEmpty()) {
-            System.out.println("LỖI: getAll() trả về rỗng!");
-        } else {
-            System.out.println("Thành công! Lấy được " + allLocations.size() + " địa điểm.");
-            // In ra 1 địa điểm để kiểm tra
-            System.out.println("Địa điểm đầu tiên: " + allLocations.get(0).getName()); 
-        }
-
-        System.out.println("\n--- 2. Đang test hàm getBySlug(\"chua-cau\") ---");
-        Location location = dao.getBySlug("chua-cau");
-        if (location == null) {
-            System.out.println("LỖI: không tìm thấy slug 'chua-cau'!");
-        } else {
-            System.out.println("Thành công! Tìm thấy: " + location.getName());
-         // Sửa dòng này
-            String moTaNgan = location.getDescription();
-            if (moTaNgan.length() > 20) {
-                moTaNgan = moTaNgan.substring(0, 20) + "...";
-            }
-            System.out.println("Mô tả: " + moTaNgan);
-        }
-
-        System.out.println("\n--- 3. Đang test hàm getByCategoryId(1) ---");
-        List<Location> categoryLocations = dao.getByCategoryId(1); // 1 = Historical Site
-        if (categoryLocations.isEmpty()) {
-            System.out.println("LỖI: không tìm thấy địa điểm nào cho Category 1!");
-        } else {
-            System.out.println("Thành công! Tìm thấy " + categoryLocations.size() + " địa điểm (Di Tích):");
-            for (Location loc : categoryLocations) {
-                System.out.println("- " + loc.getName());
-            }
-        }
+        int locationId = rs.getInt("id");
+        Location loc = new Location(
+            locationId, rs.getString("name"), rs.getString("slug"),
+            rs.getDouble("longitude"), rs.getDouble("latitude"),
+            rs.getString("description"), rs.getInt("category_id")
+        );
+        loc.setCategoryName(rs.getString("category_name"));
+        // Gọi ImageDAO để lấy danh sách đối tượng ảnh
+        List<Image> gallery = imageDAO.getByLocationId(locationId);
+        loc.setGallery(gallery);
+        return loc;
     }
 }
