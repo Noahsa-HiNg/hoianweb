@@ -28,8 +28,6 @@ public class AdminAuthFilter implements Filter {
 
         // Lấy URI (ví dụ: /hoianweb/api/admin/login)
         String requestURI = request.getRequestURI();
-
-        // 1. CHO PHÉP ĐI QUA nếu là API Đăng nhập
         if (requestURI.endsWith("/api/admin/login")) {
             chain.doFilter(request, response); 
             return;
@@ -37,10 +35,8 @@ public class AdminAuthFilter implements Filter {
         HttpSession session = request.getSession(false); 
 
         if (session != null && session.getAttribute("admin") != null) {
-            // HỢP LỆ: Đã đăng nhập
-            chain.doFilter(request, response); // Cho đi tiếp
+            chain.doFilter(request, response); 
         } else {
-            // KHÔNG HỢP LỆ: Chưa đăng nhập
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn cần đăng nhập để thực hiện hành động này");
         }
     }

@@ -15,6 +15,7 @@ public class Location implements Serializable {
     private int categoryId;
     private String categoryName;
     private List<Image> gallery; 
+    private String avata;
 
     public Location() {
         this.gallery = new ArrayList<>();
@@ -28,6 +29,7 @@ public class Location implements Serializable {
         this.latitude = latitude;
         this.description = description;
         this.categoryId = categoryId;
+        
         this.gallery = new ArrayList<>();
     }
 
@@ -45,7 +47,13 @@ public class Location implements Serializable {
     public void setDescription(String description) { this.description = description; }
     public int getCategoryId() { return categoryId; }
     public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
+    public String getAvata() {
+        return avata;
+    }
 
+    public void setAvata(String firstImage) {
+        this.avata = firstImage;
+    }
     public String getCategoryName() {
         return categoryName;
     }

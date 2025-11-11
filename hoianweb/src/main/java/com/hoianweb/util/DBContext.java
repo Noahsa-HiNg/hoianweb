@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class DBContext {
 
     // Thông tin CSDL của bạn trên XAMPP
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/hoian_db?useSSL=false&serverTimezone=UTC";
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/hoian_db?useUnicode=true&characterEncoding=UTF-8";
     private static final String USER = "root";
     private static final String PASS = ""; // Mật khẩu root của XAMPP (mặc định là rỗng)
 

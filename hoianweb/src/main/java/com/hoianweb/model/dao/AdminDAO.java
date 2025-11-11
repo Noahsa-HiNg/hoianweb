@@ -18,7 +18,7 @@ public class AdminDAO {
             try (ResultSet rs = pstmt.executeQuery()){
                 if (rs.next()) {
                     String hashedPassword = rs.getString("password");
-                    // Dùng BCrypt để kiểm tra mật khẩu
+                  
                     if (BCrypt.checkpw(password, hashedPassword)) {
                         return new Admin(rs.getInt("id"), username);
                     }

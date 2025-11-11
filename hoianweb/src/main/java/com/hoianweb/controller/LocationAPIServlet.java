@@ -35,7 +35,7 @@ public class LocationAPIServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
     	String pathInfo = request.getPathInfo();
-    	if (pathInfo == null || pathInfo == "/") {
+    	if (pathInfo == null || pathInfo.equals("/")) {
     		String cateId = request.getParameter("theloai");
     		List<Location> fullList;
     		if (cateId != null) {
@@ -49,6 +49,7 @@ public class LocationAPIServlet extends HttpServlet {
     		else {
     			fullList = this.locationDAO.getAll();
     		}
+    		java.util.Map<Integer, String> firstImageMap = this.imageDAO.getFirstImageMap();
     		List<Location> mapList = new ArrayList<>();
     		for (Location Loc:fullList) {
     			Location mapLoc = new Location();
@@ -56,7 +57,12 @@ public class LocationAPIServlet extends HttpServlet {
     			mapLoc.setName(Loc.getName());
     			mapLoc.setLongitude(Loc.getLongitude());
     			mapLoc.setLatitude(Loc.getLatitude());
+    			String firstImage = firstImageMap.get(Loc.getId());
+                if (firstImage != null) {
+                    mapLoc.setAvata(firstImage);
+                }
                 mapList.add(mapLoc);
+                
     		}
     		JsonUtil.sendJson(response, mapList);
     		

@@ -14,9 +14,7 @@ import com.hoianweb.util.DBContext;
 
 public class LocationDAO {
 
-    private ImageDAO imageDAO = new ImageDAO();
-
-    // SQL chuẩn để lấy cả tên thể loại
+	private ImageDAO imageDAO = new ImageDAO();
     private static final String SELECT_BASE = 
         "SELECT l.*, c.name AS category_name " +
         "FROM location l " +
@@ -29,24 +27,36 @@ public class LocationDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                list.add(mapResultSetToLocation(rs));
+                // CHỈ DÙNG MAPPER CƠ BẢN (KHÔNG GÂY LỖI N+1)
+                list.add(mapResultSetToLocation_Basic(rs)); 
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) { 
+            e.printStackTrace(); 
+        }
         return list;
     }
 
+    /**
+     * Sửa lỗi: Gọi mapResultSetToLocation_Full
+     */
     public Location getBySlug(String slug) {
         String sql = SELECT_BASE + "WHERE l.slug = ?";
         try (Connection conn = DBContext.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, slug);
             try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) return mapResultSetToLocation(rs);
+                if (rs.next()) {
+                    // DÙNG MAPPER ĐẦY ĐỦ (CÓ GALLERY)
+                    return mapResultSetToLocation_Full(rs); 
+                }
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return null;
     }
 
+    /**
+     * Sửa lỗi: Gọi mapResultSetToLocation_Basic
+     */
     public List<Location> getByCategoryId(int categoryId) {
         List<Location> list = new ArrayList<>();
         String sql = SELECT_BASE + "WHERE l.category_id = ? ORDER BY l.name";
@@ -55,7 +65,7 @@ public class LocationDAO {
             pstmt.setInt(1, categoryId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    list.add(mapResultSetToLocation(rs));
+                    list.add(mapResultSetToLocation_Basic(rs));
                 }
             }
         } catch (SQLException e) { e.printStackTrace(); }
@@ -92,33 +102,41 @@ public class LocationDAO {
             pstmt.setString(5, loc.getDescription());
             pstmt.setInt(6, loc.getCategoryId());
             pstmt.setInt(7, loc.getId());
+            
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) { e.printStackTrace(); }
         return false;
     }
 
-    public boolean delete(int id) {
+    public List<String> delete(int id) {
+    	List<String> urlsToDelete = imageDAO.getUrlsByLocationId(id);
         String sql = "DELETE FROM location WHERE id = ?";
         try (Connection conn = DBContext.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
-            return pstmt.executeUpdate() > 0;
+            if( pstmt.executeUpdate() > 0) {
+            	return urlsToDelete;
+            }
         } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        return null;
     }
 
-    // MAPPER: Đã cập nhật để lấy gallery là List<Image>
-    private Location mapResultSetToLocation(ResultSet rs) throws SQLException {
-        int locationId = rs.getInt("id");
+    private Location mapResultSetToLocation_Basic(ResultSet rs) throws SQLException {
         Location loc = new Location(
-            locationId, rs.getString("name"), rs.getString("slug"),
+            rs.getInt("id"), rs.getString("name"), rs.getString("slug"),
             rs.getDouble("longitude"), rs.getDouble("latitude"),
             rs.getString("description"), rs.getInt("category_id")
         );
         loc.setCategoryName(rs.getString("category_name"));
-        // Gọi ImageDAO để lấy danh sách đối tượng ảnh
-        List<Image> gallery = imageDAO.getByLocationId(locationId);
+        return loc;
+    }
+
+    private Location mapResultSetToLocation_Full(ResultSet rs) throws SQLException {
+
+        Location loc = mapResultSetToLocation_Basic(rs);
+        List<Image> gallery = imageDAO.getByLocationId(loc.getId());
         loc.setGallery(gallery);
+        
         return loc;
     }
 }

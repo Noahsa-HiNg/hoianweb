@@ -27,7 +27,7 @@ public class LoginAPIServlet extends HttpServlet{
         String user = request.getParameter("username");
         String pass = request.getParameter("password");
 
-        Admin admin = adminDAO.Checklogin(user, pass);
+        Admin admin = adminDAO.checkLogin(user, pass);
 
         if (admin != null) {
             HttpSession session = request.getSession(true);

@@ -16,6 +16,10 @@ public class Image implements Serializable {
         this.imageUrl = imageUrl;
         this.locationId = locationId;
     }
+    public Image(String imageUrl, int locationId) {
+    	this.imageUrl = imageUrl;
+        this.locationId = locationId;
+    }
 
     // Getters and Setters
     public int getId() { return id; }
