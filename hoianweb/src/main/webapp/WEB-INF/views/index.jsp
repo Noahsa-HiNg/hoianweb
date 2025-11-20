@@ -10,16 +10,16 @@
 	<meta charset="UTF-8">
 	<title>Du lịch Hội An</title>
     <link rel="icon" href="${pageContext.request.contextPath}/img/j.jpg" type="image/jpg">
-	
+
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap&subset=vietnamese" rel="stylesheet">
-	
+
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/linearicons.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/magnific-popup.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/nice-select.css">					
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/nice-select.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl.carousel.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
@@ -38,7 +38,7 @@
 		section {
 		    padding-top: 120px;
 		}
-		
+
 		@media (max-width: 991.98px) {
 		    .banner-area,
 		    .portfolio-area,
@@ -46,7 +46,7 @@
 		        padding-top: 80px;
 		    }
 		}
-		
+
 		@media (max-width: 767px) {
 		    .banner-area,
 		    .portfolio-area,
@@ -55,7 +55,7 @@
 		    }
 		}
 		.protfolio-wrap {
-		    padding-bottom: 100px;
+		    /*padding-bottom: 100px;*/
 		    min-height: 80vh;
 		}
 		.footer-area {
@@ -144,7 +144,7 @@
 		#category-filters li:hover:not(.active) {
 		    color: #8ab92d;
 		}
-		
+
 		/* GRID ITEMS HIDE/SHOW */
 		.single-portfolio {
 		    transition: all 0.3s ease;
@@ -167,16 +167,16 @@
 
 					<div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarSupportedContent">
 						<ul class="navbar-nav">
-							<li><a href="index">Home</a></li> 
+							<li><a href="index">Home</a></li>
 							<li><a href="map">Map</a></li>
 							<li><a href="login">Login</a></li>
 						</ul>
-					</div>						
+					</div>
 				</div>
 			</nav>
 		</header>
 
-		<section class="banner-area relative" id="home">	
+		<section class="banner-area relative" id="home">
 			<div class="overlay overlay-bg"></div>
 			<div class="container">
 				<div class="row fullscreen d-flex align-items-center justify-content-center">
@@ -184,7 +184,7 @@
 						<h5 class="text-uppercase">Hãy là một phần của hành trình tuyệt vời này</h5>
 						<h1>Thành phố Hội An</h1>
 						<a href="#portfolio" class="primary-btn text-uppercase">Khám phá thêm!</a>
-					</div>											
+					</div>
 				</div>
 			</div>
 		</section>
@@ -199,13 +199,13 @@
 						</div>
 					</div>
 				</div>
-			
+
 				<div class="filters">
 					<ul id="category-filters">
 						<li class="active" data-filter="*">Tất cả</li>
 					</ul>
 				</div>
-				
+
 				<div class="filters-content">
 					<div class="row grid" id="portfolio-grid">
 						<!-- JS fills this -->
@@ -214,7 +214,8 @@
 			</div>
 		</section>
 
-		<footer class="footer-area section-gap">
+		<!--Footer section is commented out for now -->
+		<!--<footer class="footer-area section-gap">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-5 col-md-6 col-sm-6">
@@ -226,7 +227,7 @@
 							</p>
 							<p class="footer-text">
 								Copyright <script>document.write(new Date().getFullYear());</script> All rights reserved | This Website is created with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://github.com/mrjatinchauhan" target="_blank">Jatin Chauhan</a>
-							</p>	
+							</p>
 						</div>
 					</div>
 					<div class="col-lg-5 col-md-6 col-sm-6">
@@ -241,7 +242,7 @@
 								</form>
 							</div>
 						</div>
-					</div>						
+					</div>
 					<div class="col-lg-2 col-md-6 col-sm-6 social-widget">
 						<div class="single-footer-widget">
 							<h6>Theo dõi chúng tôi</h6>
@@ -253,33 +254,34 @@
 								<a href="#"><i class="fa fa-instagram"></i></a>
 							</div>
 						</div>
-					</div>							
+					</div>
 				</div>
 			</div>
-		</footer>	
+		</footer>-->
 	</div>
 
 	<script src="${pageContext.request.contextPath}/js/vendor/jquery-2.2.4.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhH8K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="${pageContext.request.contextPath}/js/vendor/bootstrap.min.js"></script>			
-	<script src="${pageContext.request.contextPath}/js/easing.min.js"></script>			
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/vendor/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/easing.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/jquery.ajaxchimp.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/jquery.magnific-popup.min.js"></script>	
-	<script src="${pageContext.request.contextPath}/js/owl.carousel.min.js"></script>			
-	<script src="${pageContext.request.contextPath}/js/jquery.sticky.js"></script>			
-	<script src="${pageContext.request.contextPath}/js/jquery.nice-select.min.js"></script>			
-	<script src="${pageContext.request.contextPath}/js/parallax.min.js"></script>	
+	<script src="${pageContext.request.contextPath}/js/jquery.magnific-popup.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/owl.carousel.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/jquery.sticky.js"></script>
+	<script src="${pageContext.request.contextPath}/js/jquery.nice-select.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/parallax.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/mail-script.js"></script>
-		<!--  <script src="${pageContext.request.contextPath}/js/isotope.pkgd.min.js"></script>	-->
-	<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>	
-	<script src="${pageContext.request.contextPath}/js/main.js"></script>	
+    <!--<script src="${pageContext.request.contextPath}/js/isotope.pkgd.min.js"></script>-->
+	<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+	<script src="${pageContext.request.contextPath}/js/main.js"></script>
 
 	<script>
 	document.addEventListener("DOMContentLoaded", function() {
-	    const contextPath = "/hoianweb";
+	    const contextPath = "${pageContext.request.contextPath}";
+	    console.log("[DEBUG] contextPath = " + contextPath);
 	    const portfolioGrid = document.getElementById('portfolio-grid');
 	    const categoryFilters = document.getElementById('category-filters');
-	
+
 	    Promise.all([
 	        fetch(contextPath + "/api/theloai"),
 	        fetch(contextPath + "/api/diadiem/")
@@ -294,7 +296,7 @@
 	        console.error("Lỗi khi tải dữ liệu:", error);
 	        portfolioGrid.innerHTML = "<p class='text-center'>Không thể tải dữ liệu địa điểm.</p>";
 	    });
-	
+
 	    function renderCategories(categories) {
 	        let filterHtml = '<li class="active" data-filter="*">Tất cả</li>';
 	        if (categories && Array.isArray(categories)) {
@@ -305,7 +307,7 @@
 	        }
 	        categoryFilters.innerHTML = filterHtml;
 	    }
-	
+
 	    function renderLocations(locations, categories) {
 	        const categoryMap = new Map();
 	        if (categories && Array.isArray(categories)) {
@@ -313,25 +315,25 @@
 	                categoryMap.set(cat.id, cat.name);
 	            });
 	        }
-	
+
 	        let locationsHtml = '';
 	        if (locations && Array.isArray(locations)) {
 	            locations.forEach(function(loc) {
 	                const filterClass = "category-" + loc.categoryId;
-	                const imageUrl = loc.avata && loc.avata.startsWith('http') 
-	                    ? loc.avata 
+	                const imageUrl = loc.avata && loc.avata.startsWith('http')
+	                    ? loc.avata
 	                    : (loc.avata ? contextPath + loc.avata : '');
 	                const detailUrl = loc.slug ? contextPath + '/' + loc.slug : '#';
 	                const tenDiaDiem = loc.name || 'Địa điểm không tên';
 	                const tenTheLoai = categoryMap.get(loc.categoryId) || 'Không rõ';
-	
-	                const imgTag = imageUrl 
+
+	                const imgTag = imageUrl
 	                    ? '<img src="' + imageUrl + '" alt="' + tenDiaDiem + '" ' +
 	                      'onload="this.parentNode.classList.add(\'loaded\')" ' +
-	                      'onerror="this.onerror=null; this.src=\'' + contextPath + '/img/no-image.png\'; this.parentNode.classList.remove(\'loaded\')">' 
+	                      'onerror="this.onerror=null; this.src=\'' + contextPath + '/img/no-image.png\'; this.parentNode.classList.remove(\'loaded\')">'
 	                    : '';
-	
-	                locationsHtml += 
+
+	                locationsHtml +=
 	                    '<div class="single-portfolio col-sm-4 all ' + filterClass + '">' +
 	                        '<div class="item">' +
 	                            '<div class="image-wrapper">' +
@@ -348,19 +350,19 @@
 	        }
 	        portfolioGrid.innerHTML = locationsHtml;
 	    }
-	
+
 	    function bindFilterClicks() {
 	        $(categoryFilters).off('click').on('click', 'li', function() {
 	            const $this = $(this);
 	            const filterValue = $this.attr('data-filter');
-	
+
 	            // Update active class (GREEN)
 	            $(categoryFilters).find('.active').removeClass('active');
 	            $this.addClass('active');
-	
+
 	            // FILTER WITH PURE JS
 	            const items = portfolioGrid.querySelectorAll('.single-portfolio');
-	
+
 	            items.forEach(item => {
 	                if (filterValue === '*' || item.classList.contains(filterValue.substring(1))) {
 	                    item.style.display = 'block';

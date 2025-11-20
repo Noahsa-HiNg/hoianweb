@@ -10,13 +10,13 @@
     <meta charset="UTF-8">
     <title>Admin Login</title>
     <link rel="icon" href="${pageContext.request.contextPath}/img/j.jpg" type="image/jpg">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> 
-    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/linearicons.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font-awesome.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/magnific-popup.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nice-select.css">					
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nice-select.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/animate.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/owl.carousel.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css">
@@ -42,23 +42,23 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarSupportedContent">
                         <ul class="navbar-nav">
-                            <li><a href="index">Home</a></li>
-                            <li><a href="map">Map</a></li>
-                            <li><a href="login">Login</a></li>
+                            <li><a href="index"><strong>Home</strong></a></li>
+                            <li><a href="map"><strong>Map</strong></a></li>
+                            <li><a href="login"><strong>Login</strong></a></li>
                         </ul>
-                    </div>						
+                    </div>
                 </div>
             </nav>
         </header>
 
-        <section class="login-form-section"> 
+        <section class="login-form-section">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
                         <div class="card shadow-sm">
                             <div class="card-body p-4 p-md-5">
                                 <h3 class="card-title text-center mb-4">Admin Login</h3>
-                                
+
                                 <form id="login-form">
                                     <div class="form-group mb-3">
                                         <label for="username" class="form-label">Username</label>
@@ -68,9 +68,9 @@
                                         <label for="password" class="form-label">Password</label>
                                         <input type="password" class="form-control" id="password" required>
                                     </div>
-                                    
+
                                     <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
-                                    
+
                                     <div class="d-grid">
                                         <button type="submit" class="btn btn-primary btn-lg w-100">Login</button>
                                     </div>
@@ -85,38 +85,38 @@
 
     <script src="${pageContext.request.contextPath}/js/vendor/jquery-2.2.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/vendor/bootstrap.min.js"></script>			
-    <script src="${pageContext.request.contextPath}/js/easing.min.js"></script>			
+    <script src="${pageContext.request.contextPath}/js/vendor/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/easing.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/jquery.ajaxchimp.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.magnific-popup.min.js"></script>	
-    <script src="${pageContext.request.contextPath}/js/owl.carousel.min.js"></script>			
-    <script src="${pageContext.request.contextPath}/js/jquery.nice-select.min.js"></script>			
-    <script src="${pageContext.request.contextPath}/js/parallax.min.js"></script>	
+    <script src="${pageContext.request.contextPath}/js/jquery.magnific-popup.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/owl.carousel.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/jquery.nice-select.min.js"></script>
+    <script src="${pageContext.request.contextPath}/js/parallax.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/mail-script.js"></script>
-    <script src="${pageContext.request.contextPath}/js/main.js"></script>	
+    <script src="${pageContext.request.contextPath}/js/main.js"></script>
 
     <script>
 	    document.getElementById('login-form').addEventListener('submit', function(event) {
 	        event.preventDefault();
-	
+
 	        const username = document.getElementById('username').value.trim();
 	        const password = document.getElementById('password').value;
 	        const errorMessage = document.getElementById('error-message');
 	        const contextPath = "${pageContext.request.contextPath}";
-	
+
 	        errorMessage.classList.add('d-none');
-	
+
 	        if (!username || !password) {
 	            errorMessage.textContent = 'Vui lòng nhập đầy đủ thông tin.';
 	            errorMessage.classList.remove('d-none');
 	            return;
 	        }
-	
+
 	        // SEND FORM DATA (NOT JSON)
 	        const formData = new URLSearchParams();
 	        formData.append('username', username);
 	        formData.append('password', password);
-	
+
 	        fetch(contextPath + "/api/admin/login", {
 	            method: 'POST',
 	            headers: {

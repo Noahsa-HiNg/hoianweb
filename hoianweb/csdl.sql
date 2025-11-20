@@ -59,7 +59,7 @@ CREATE TABLE `image` (
 
 -- 1. Admin Account (user: admin, pass: admin123)
 INSERT INTO `admin` (`username`, `password`) VALUES
-('admin', '$2y$10$E.qR2.d360.R2g.X.Y.Z.O.m0.Q.Z.Y.X.W.V.U.T.S.R.Q.P.O');
+('admin', '$2a$12$85zi9qU0u5Hpal5YjQ/iX.dfUPqtGZPRTX47kK5n4K8Ve.ASZqPBu');
 
 -- 2. Categories
 INSERT INTO `category` (`name`) VALUES

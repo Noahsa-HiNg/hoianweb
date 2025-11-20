@@ -1,23 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
     "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
 <urlrewrite>
 
-    <!-- /banh-mi-phuong → FORWARD to /detail/banh-mi-phuong -->
+    <!--
+      Rule 1: Passthrough for essential directories.
+      This rule prevents requests for static resources and APIs
+      from being rewritten as slugs. This must come first.
+      The 'last="true"' attribute stops processing further rules on a match.
+    -->
     <rule>
-        <from>^/([a-zA-Z0-9-]+)$</from>
+        <from>^/(api|css|js|img|images|fonts|vendor)/.*$</from>
+        <to last="true">/$0</to>
+    </rule>
+
+    <!--
+      Rule 2: Passthrough for specific file extensions.
+      Catches any direct requests to files like .jpg, .css, etc., anywhere in the path.
+    -->
+     <rule>
+        <from>^/.*\.(css|js|png|jpg|jpeg|gif|svg|woff2?|ttf|ico)$</from>
+        <to last="true">/$0</to>
+    </rule>
+
+    <!--
+      Rule 3: Generic slug forwarder for place details.
+      - This is the main rule for your place details pages.
+      - It matches any top-level path that looks like a slug (e.g., /banh-mi-phuong).
+      - It uses a negative lookahead (?!...) to EXCLUDE specific paths that are handled by the ViewServlet.
+        This prevents URLs like /login from being incorrectly forwarded to /detail/login.
+      - It forwards the request internally to the DetailServlet (which is mapped to /detail/*).
+    -->
+    <rule>
+        <from
+        >^/(?!index|login|admin|about|blog|map|signup)([a-zA-Z0-9-]+)$</from>
         <to type="forward" last="true">/detail/$1</to>
     </rule>
 
-    <!-- Allow static files -->
-    <rule>
-        <from>^/(css|js|images|img|api)/.*$</from>
-        <to type="passthrough" last="true">/$0</to>
-    </rule>
-
-    <rule>
-        <from>^/.*\.(css|js|png|jpg|jpeg|gif|svg|woff2?|ttf|ico)$</from>
-        <to type="passthrough" last="true">/$0</to>
-    </rule>
+    <!--
+      Note on other URLs:
+      Requests for /, /index, /login, /admin, etc., will not match any of the rewrite rules above.
+      Therefore, they are passed directly to the servlet container, which then correctly maps them
+      to your ViewServlet based on its @WebServlet annotation. This is the desired behavior.
+    -->
 
 </urlrewrite>

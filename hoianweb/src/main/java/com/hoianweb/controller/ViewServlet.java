@@ -7,17 +7,47 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = {"/index", "/about", "/blog", "/goldentemple-info", "/recent-announcement", "/signup", "/login", "/admin"})
+@WebServlet(
+    urlPatterns = {
+        "/index",
+        "/about",
+        "/blog",
+        "/goldentemple-info",
+        "/recent-announcement",
+        "/signup",
+        "/login",
+        "/admin",
+    }
+)
 public class ViewServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws ServletException, IOException {
         String path = request.getServletPath();
+        // Normalise empty servlet path to '/' so root requests (/) are handled as the index route.
+        if (path == null || path.isEmpty()) {
+            path = "/";
+        }
 
         // Check if the request is for a static resource
-        if (path.startsWith("/css/") || path.startsWith("/js/") || path.startsWith("/img/") || path.startsWith("/fonts/") || path.startsWith("/scss/") || path.startsWith("/vendor/") || path.startsWith("/bootstrap/") || path.startsWith("/Pages-inside/")) {
+        if (
+            path.startsWith("/css/") ||
+            path.startsWith("/js/") ||
+            path.startsWith("/img/") ||
+            path.startsWith("/fonts/") ||
+            path.startsWith("/scss/") ||
+            path.startsWith("/vendor/") ||
+            path.startsWith("/bootstrap/") ||
+            path.startsWith("/Pages-inside/")
+        ) {
             // Forward to the default servlet for static resource handling
-            getServletContext().getNamedDispatcher("default").forward(request, response);
+            getServletContext()
+                .getNamedDispatcher("default")
+                .forward(request, response);
             return;
         }
 
