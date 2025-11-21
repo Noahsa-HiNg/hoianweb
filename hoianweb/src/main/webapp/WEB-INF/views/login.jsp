@@ -42,9 +42,9 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarSupportedContent">
                         <ul class="navbar-nav">
-                            <li><a href="index"><strong>Home</strong></a></li>
-                            <li><a href="map"><strong>Map</strong></a></li>
-                            <li><a href="login"><strong>Login</strong></a></li>
+                            <li><a href="${pageContext.request.contextPath}/index"><strong>Home</strong></a></li>
+                            <li><a href="${pageContext.request.contextPath}/map"><strong>Map</strong></a></li>
+                            <li><a href="${pageContext.request.contextPath}/login"><strong>Login</strong></a></li>
                         </ul>
                     </div>
                 </div>

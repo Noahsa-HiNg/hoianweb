@@ -167,9 +167,9 @@
 
 					<div class="collapse navbar-collapse justify-content-end align-items-center" id="navbarSupportedContent">
 						<ul class="navbar-nav">
-							<li><a href="index">Home</a></li>
-							<li><a href="map">Map</a></li>
-							<li><a href="login">Login</a></li>
+							<li><a href="${pageContext.request.contextPath}/index">Home</a></li>
+							<li><a href="${pageContext.request.contextPath}/map">Map</a></li>
+							<li><a href="${pageContext.request.contextPath}/login">Login</a></li>
 						</ul>
 					</div>
 				</div>

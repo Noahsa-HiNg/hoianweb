@@ -243,6 +243,7 @@
                             '<ul>' +
                                 '<li><strong>Danh mục:</strong> ' + (data.categoryName || 'Không rõ') + '</li>' +
                                 '<li><strong>Tọa độ:</strong> ' + (data.latitude || '') + ', ' + (data.longitude || '') + '</li>' +
+                                '<li><a class="btn btn-sm btn-outline-primary" href="' + contextPath + '/map?lat=' + (data.latitude || '') + '&lng=' + (data.longitude || '') + '&name=' + encodeURIComponent(data.name || '') + '">Xem trên bản đồ</a></li>' +
                             '</ul>' +
                         '</div></div>';
                     container.insertAdjacentHTML('beforeend', leftStart + leftHtml + rightHtml);
