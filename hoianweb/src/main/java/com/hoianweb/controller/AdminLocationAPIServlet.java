@@ -66,6 +66,8 @@ public class AdminLocationAPIServlet extends HttpServlet {
         //    - POST /api/admin/diadiem/{id}/gallery (multipart/form-data)
         //    - or POST /api/admin/diadiem/gallery with parameter 'location_id'
         try {
+        	request.setCharacterEncoding("UTF-8");
+        	response.setCharacterEncoding("UTF-8");
             String pathInfo = request.getPathInfo(); // may be "/{id}/gallery" or similar
 
             // If multipart upload to gallery
@@ -136,8 +138,7 @@ public class AdminLocationAPIServlet extends HttpServlet {
                     String unique = UUID.randomUUID().toString() + ext;
                     File out = new File(uploadDir, unique);
                     p.write(out.getAbsolutePath());
-                    // store URL path that the app serves (same pattern as ImageUploadServlet)
-                    // Store a context-independent path starting with '/uploads/...'
+
                     String dbPath = "/uploads/" + unique;
                     Image img = new Image(dbPath, locationId);
                     int newImageId = imageDAO.create(img);
@@ -354,6 +355,8 @@ public class AdminLocationAPIServlet extends HttpServlet {
         HttpServletResponse response
     ) throws ServletException, IOException {
         try {
+        	request.setCharacterEncoding("UTF-8");
+        	response.setCharacterEncoding("UTF-8");
             String pathInfo = request.getPathInfo(); // expected "/{id}"
             if (pathInfo == null || pathInfo.length() <= 1) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

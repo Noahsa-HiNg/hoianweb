@@ -29,11 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UploadsServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-
-    // Directory where uploaded files are stored on the server
     private static final String UPLOAD_DIRECTORY = "D:/hoian_uploads";
-
-    // Buffer size for streaming file contents
     private static final int BUFFER_SIZE = 8192;
 
     @Override
@@ -48,10 +44,6 @@ public class UploadsServlet extends HttpServlet {
         serveFile(request, response, false);
     }
 
-    /**
-     * Core file serving logic. If writeBody==true the file contents are written to the response;
-     * otherwise (HEAD) only headers are sent.
-     */
     private void serveFile(HttpServletRequest request, HttpServletResponse response, boolean writeBody)
             throws IOException {
 
@@ -60,22 +52,15 @@ public class UploadsServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing file name in URL");
             return;
         }
-
-        // Decode URL-encoded path segments (e.g. spaces, UTF-8 characters)
         String decoded;
         try {
             decoded = URLDecoder.decode(pathInfo, "UTF-8");
         } catch (IllegalArgumentException e) {
-            // Malformed encoding
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Malformed file path");
             return;
         }
-
-        // Remove leading '/'
         if (decoded.startsWith("/")) decoded = decoded.substring(1);
 
-        // Disallow attempts to reference parent dirs or absolute paths.
-        // We'll construct a File under UPLOAD_DIRECTORY and validate canonical path.
         File uploadsDir = new File(UPLOAD_DIRECTORY);
         if (!uploadsDir.exists() || !uploadsDir.isDirectory()) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Uploads directory not available");
@@ -84,7 +69,6 @@ public class UploadsServlet extends HttpServlet {
 
         File requestedFile = new File(uploadsDir, decoded);
 
-        // Protect against path traversal by ensuring canonical path is inside uploadsDir
         String uploadsCanonical = uploadsDir.getCanonicalPath();
         String requestedCanonical;
         try {

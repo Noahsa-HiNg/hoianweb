@@ -775,11 +775,15 @@
             // Generate slug from name if missing
             var slugInputEl = document.getElementById('place-slug');
             if ((!slugInputEl.value || slugInputEl.value.trim() === '') && payload.name) {
+                // Logic sửa đổi:
                 var genSlug = payload.name.toLowerCase().trim()
-                    .replace(/đ/g, 'd').replace(/Đ/g, 'd')
-                    .replace(/[^a-z0-9\s-]/g, '')
-                    .replace(/\s+/g, '-')
-                    .replace(/-+/g, '-');
+                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') 
+                    .replace(/đ/g, 'd')                               
+                    .replace(/[^a-z0-9\s-]/g, '')                     
+                    .replace(/\s+/g, '-')                              
+                    .replace(/-+/g, '-')                               
+                    .replace(/^-+|-+$/g, '');                          
+                    
                 slugInputEl.value = genSlug;
                 payload.slug = genSlug;
             }
@@ -908,26 +912,33 @@
         (function attachSlugHelpers(){
             var nameEl = document.getElementById('place-name');
             var slugEl = document.getElementById('place-slug');
+            
             if (nameEl && slugEl) {
                 nameEl.addEventListener('blur', function(){
                     if (!slugEl.value || slugEl.value.trim() === '') {
-                        var gen = nameEl.value.toLowerCase().trim()
-                            .replace(/đ/g, 'd').replace(/Đ/g, 'd')
-                            .replace(/[^a-z0-9\s-]/g, '')
-                            .replace(/\s+/g, '-')
-                            .replace(/-+/g, '-');
-                        slugEl.value = gen;
+                        var val = nameEl.value.toLowerCase().trim();
+                        val = val.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                        val = val.replace(/đ/g, 'd');
+                        val = val.replace(/[^a-z0-9\s-]/g, '');
+                        val = val.replace(/\s+/g, '-');
+                        val = val.replace(/-+/g, '-');
+
+                        val = val.replace(/^-+|-+$/g, '');
+
+                        slugEl.value = val;
                     }
                 });
                 slugEl.addEventListener('blur', function(){
                     var s = slugEl.value && slugEl.value.trim();
                     if (!s) return;
-                    var existing = locationsCache.find(function(x){ return x && x.slug === s; });
-                    var currentId = document.getElementById('place-id').value;
-                    if (existing && (!currentId || String(existing.id) !== String(currentId))) {
-                        showModalError('Slug đã tồn tại. Vui lòng sửa slug hoặc đổi tên.', 'warning');
-                    } else {
-                        clearModalError();
+                    if (typeof locationsCache !== 'undefined') {
+                        var existing = locationsCache.find(function(x){ return x && x.slug === s; });
+                        var currentId = document.getElementById('place-id').value;
+                        if (existing && (!currentId || String(existing.id) !== String(currentId))) {
+                            showModalError('Slug đã tồn tại. Vui lòng sửa slug hoặc đổi tên.', 'warning');
+                        } else {
+                            clearModalError();
+                        }
                     }
                 });
             }
